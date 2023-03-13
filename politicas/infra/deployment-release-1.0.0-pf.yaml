@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: politicas-pf
+  namespace: estudos
+  labels:
+    app: politicas
+    version: release-1.0.0
+    service-mesh: pf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: politicas
+      version: release-1.0.0
+      service-mesh: pf
+  template:
+    metadata:
+      labels:
+        app: politicas
+        version: release-1.0.0
+        service-mesh: pf
+    spec:
+      containers:
+        - name: politicas-container
+          image: politicas:release-1.0.0
+          env:
+            - name: spring_profiles_active
+              value: "prod"
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "75m"
+            requests:
+              memory: "248Mi"
+              cpu: "25m"
+          ports:
+            - containerPort: 8080

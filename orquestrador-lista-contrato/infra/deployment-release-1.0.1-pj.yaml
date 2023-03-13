@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orquestrador-lista-contrato-pj
+  namespace: estudos
+  labels:
+    app: orquestrador-lista-contrato
+    version: release-1.0.1
+    service-mesh: pj
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orquestrador-lista-contrato
+      version: release-1.0.1
+      service-mesh: pj
+  template:
+    metadata:
+      labels:
+        app: orquestrador-lista-contrato
+        version: release-1.0.1
+        service-mesh: pj
+    spec:
+      containers:
+        - name: orquestrador-lista-contrato-container
+          image: orquestrador-lista-contrato:release-1.0.1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: spring_profiles_active
+              value: "prod"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "75m"
+            requests:
+              memory: "248Mi"
+              cpu: "25m"
+          ports:
+            - containerPort: 8080
